@@ -1,0 +1,41 @@
+scalar JSON
+
+type Collection {
+  id: ID! @id
+  name: String! @unique
+  type: String!
+  metadata: JSON
+  items: [Item!]! @relationship(type: "HAS_ITEM", direction: OUT)
+  localizations: [Localization!]! @relationship(type: "HAS_LOCALIZATION", direction: OUT)
+  nameTranslations: [NameTranslation!]! @relationship(type: "HAS_NAME_TRANSLATION", direction: OUT)
+}
+
+type Item {
+  id: ID! @id
+  position: Int!
+  collection: Collection @relationship(type: "IS_COLLECTION", direction: OUT)
+  asset: Asset @relationship(type: "IS_ASSET", direction: OUT)
+}
+
+type Asset {
+  id: ID! @id
+  name: String!
+  type: String!
+  data: String!
+  metadata: JSON
+  collection: Collection! @relationship(type: "BELONGS_TO", direction: IN)
+  localizations: [Localization!]! @relationship(type: "HAS_LOCALIZATION", direction: OUT)
+  nameTranslations: [NameTranslation!]! @relationship(type: "HAS_NAME_TRANSLATION", direction: OUT)
+}
+
+type Localization {
+  id: ID! @id
+  locale: String!
+  content: String!
+}
+
+type NameTranslation {
+  id: ID! @id
+  language: String!
+  title: String
+}
